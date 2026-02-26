@@ -1,3 +1,5 @@
+from dataclasses import field
+
 import streamlit as st
 
 from playlist_logic import (
@@ -276,8 +278,9 @@ def render_playlist(label, songs):
         st.write("No songs in this playlist.")
         return
 
-    query = st.text_input(f"Search {label} playlist by artist", key=f"search_{label}")
-    filtered = search_songs(songs, query, field="artist")
+    search_field = st.selectbox("Search by", options=["artist", "genre", "title"], key=f"field_{label}")
+    query = st.text_input(f"Search {label} playlist by {search_field}", key=f"search_{label}")
+    filtered = search_songs(songs, query, field=search_field)
 
     if not filtered:
         st.write("No matching songs.")
